@@ -1,0 +1,6 @@
+{
+    "editor.smoothScrolling": true,
+    "workbench.tree.smoothScrolling": true,
+    "editor.mouseWheelScrollSensitivity": 2.5,
+    "editor.fastScrollSensitivity": 5
+}
