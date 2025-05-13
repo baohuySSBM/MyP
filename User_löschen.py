@@ -4,6 +4,7 @@ from typing import Dict
 from datetime import datetime 
 import bcrypt 
 
+
 app = FastAPI()
 user_db: Dict[str, "User"] = {}
 
@@ -31,18 +32,18 @@ class User:
         return bcrypt.hashpw(password.encode(), bcrypt.gensalt()).decode()
 
 
-@app.post("users", response_model=UserResponse)
+@app.post("/users", response_model=UserResponse)
 def create_user(data: UserCreate):
     email = data.email.lower()
-    if email not in user_db:
-        raise HTTPException(status_code=404, detail="E-Mail bereits registriert")
+    if email in user_db:
+        raise HTTPException(status_code=400, detail="E-Mail bereits registriert")
 
     user = User(data.name, email, data.password)
-    user_db[email] = User
+    user_db[email] = user
     return{"name": user.name, "email": user.email}
 
 
-@app.get("/users/{email}")
+@app.get("/users/{email}", response_model=UserResponse)
 def get_user(email:str):
     email = email.lower()
     if email not in user_db:
@@ -52,7 +53,7 @@ def get_user(email:str):
     return{"name": user.name, "email": user.email}
 
 
-@app.get("/users/{email}", response_model=UserResponse)
+@app.delete("/users/{email}")
 def delete_user(email: str):
     email = email.lower()
     if email not in user_db:
