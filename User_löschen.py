@@ -20,7 +20,7 @@ class UserCreate(BaseModel):
 
 class UserResponse(BaseModel):
     id: str
-    name: str
+    name: str 
     email: EmailStr
     role: str
     active: bool
